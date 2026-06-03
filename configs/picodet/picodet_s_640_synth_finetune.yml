@@ -1,0 +1,16 @@
+_BASE_: [
+  'picodet_s_640_synth.yml',
+]
+
+pretrain_weights: output/picodet_s_640_synth/best_model.pdparams
+weights: output/picodet_s_640_synth_finetune/best_model
+save_dir: output/picodet_s_640_synth_finetune
+
+LearningRate:
+  base_lr: 0.001
+  schedulers:
+  - !CosineDecay
+    max_epochs: 120
+  - !LinearWarmup
+    start_factor: 0.1
+    steps: 100

@@ -1,0 +1,25 @@
+# 训练数据（单独发给朋友，不上传）
+dataset/JPEGImages/
+dataset/Annotations/
+
+# PaddleDetection 框架（朋友自己下载）
+PaddleDetection/
+
+# 本地素材（只在本机使用）
+model_datasets/
+tools_custom/
+background/
+background_videos/
+model_videos/
+
+# Python 虚拟环境和缓存
+.venv_gpu/
+.cache/
+.matplotlib/
+.visualdl/
+__pycache__/
+*.pyc
+
+# 训练输出（权重文件太大）
+outputs/
+experiments/
