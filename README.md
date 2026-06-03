@@ -58,9 +58,14 @@ pip install paddlepaddle-gpu
 pip install -r PaddleDetection/requirements.txt
 ```
 
-### 3. 放入数据集
+### 3. 下载并放入数据集
 
-将训练数据解压到 `picodet_train/dataset/`，确保目录结构如下：
+从百度网盘下载训练数据：
+
+链接：https://pan.baidu.com/s/1I_ONzmLfAtl_IB2B_-3YWQ?pwd=t66f  
+提取码：t66f
+
+解压到 `picodet_train/dataset/`，确保目录结构如下：
 
 ```
 dataset/
