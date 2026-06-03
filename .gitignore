@@ -1,8 +1,8 @@
-# 训练数据（单独发给朋友，不上传）
+# 训练数据（百度网盘，不上传）
 dataset/JPEGImages/
 dataset/Annotations/
 
-# PaddleDetection 框架（朋友自己下载）
+# PaddleDetection 框架（自行下载）
 PaddleDetection/
 
 # 本地素材（只在本机使用）
