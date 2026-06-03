@@ -38,23 +38,22 @@ picodet_train/
 
 ## 环境准备
 
+以下所有命令均在**仓库根目录**（即 `picodet_train/`）下运行。
+
 ### 1. 下载 PaddleDetection
 
-将 PaddleDetection（release/2.6 分支）克隆到 `picodet_train/PaddleDetection/`：
-
 ```bash
-git clone -b release/2.6 https://github.com/PaddlePaddle/PaddleDetection.git picodet_train/PaddleDetection
+git clone -b release/2.6 https://github.com/PaddlePaddle/PaddleDetection.git PaddleDetection
 ```
 
 ### 2. 安装依赖
 
-在 `picodet_train/` 下创建虚拟环境并安装依赖：
+> 需要本机已安装 **CUDA 12.0**。
 
 ```bash
-cd picodet_train
 python -m venv .venv_gpu
 .venv_gpu\Scripts\activate
-pip install paddlepaddle-gpu
+pip install paddlepaddle-gpu==2.6.1.post120
 pip install -r PaddleDetection/requirements.txt
 ```
 
@@ -65,7 +64,7 @@ pip install -r PaddleDetection/requirements.txt
 链接：https://pan.baidu.com/s/1I_ONzmLfAtl_IB2B_-3YWQ?pwd=t66f  
 提取码：t66f
 
-解压到 `picodet_train/dataset/`，确保目录结构如下：
+解压到 `dataset/`，确保目录结构如下：
 
 ```
 dataset/
@@ -79,19 +78,19 @@ dataset/
 ### 4. 验证 GPU
 
 ```bash
-picodet_train\.venv_gpu\Scripts\python.exe -c "import paddle; print(paddle.__version__); print(paddle.device.get_device()); paddle.utils.run_check()"
+.venv_gpu\Scripts\python.exe -c "import paddle; print(paddle.__version__); print(paddle.device.get_device()); paddle.utils.run_check()"
 ```
 
 ---
 
 ## 训练流程
 
-所有命令在 `picodet_train/` 的**上级目录**运行。
+以下所有命令均在**仓库根目录**下运行。
 
 ### 第一步：训练
 
 ```bash
-picodet_train\.venv_gpu\Scripts\python.exe picodet_train\train_picodet_synth.py
+.venv_gpu\Scripts\python.exe train_picodet_synth.py
 ```
 
 默认使用 `configs/picodet/picodet_s_640_synth_v2.yml`，从第 3 轮的最优权重开始 fine-tune，
@@ -112,14 +111,12 @@ PaddleDetection/output/picodet_s_640_synth_v2/best_model.pdparams
 | `--resume` | 从断点继续训练，填 checkpoint 路径 | 无 |
 | `--amp` | 开启混合精度，速度更快显存更少 | 否 |
 
-> RTX 4060 8GB 建议 `--batch-size 8`，若报显存不足改为 `--batch-size 4`。
-
 ### 第二步：评估
 
 训练结束后，在测试集上计算各类别 AP 和整体 mAP：
 
 ```bash
-picodet_train\.venv_gpu\Scripts\python.exe picodet_train\eval_picodet_synth.py
+.venv_gpu\Scripts\python.exe eval_picodet_synth.py
 ```
 
 ### 第三步：导出
@@ -127,7 +124,7 @@ picodet_train\.venv_gpu\Scripts\python.exe picodet_train\eval_picodet_synth.py
 将权重导出为推理模型（用于 RK3588 部署）：
 
 ```bash
-picodet_train\.venv_gpu\Scripts\python.exe picodet_train\export_picodet_synth.py
+.venv_gpu\Scripts\python.exe export_picodet_synth.py
 ```
 
 导出结果保存在 `PaddleDetection/output_inference/picodet_s_640_synth_v2/`，包含：
@@ -143,7 +140,5 @@ picodet_train\.venv_gpu\Scripts\python.exe picodet_train\export_picodet_synth.py
 如果不想在旧权重基础上 fine-tune，可以从第 1 轮从头开始：
 
 ```bash
-picodet_train\.venv_gpu\Scripts\python.exe picodet_train\train_picodet_synth.py ^
-    --config configs/picodet/picodet_s_640_synth.yml ^
-    --epoch 300 --base-lr 0.005 --clean-output
+.venv_gpu\Scripts\python.exe train_picodet_synth.py --config configs/picodet/picodet_s_640_synth.yml --epoch 300 --base-lr 0.005 --clean-output
 ```
